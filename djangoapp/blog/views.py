@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
+
 def index(request):
+    posts = 
     return render(request, 'blog/pages/index.html')
 
 
