@@ -147,6 +147,10 @@ input[type='search']::-webkit-search-results-decoration {
   -webkit-appearance: none;
 }
 
+img {
+  margin: 0 auto;
+}
+
 body,
 html,
 .blog-wrapper {
