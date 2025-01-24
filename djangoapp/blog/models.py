@@ -95,7 +95,7 @@ class Post(models.Model):
 
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, default="", null=False, blank=True, max_length=150)
-    exerpt = models.CharField(max_length=150)
+    excerpt = models.CharField(max_length=150)
     is_published = models.BooleanField(default=False)
     content = models.TextField()
     cover = models.ImageField(upload_to='posts/%Y/%m/', blank=True, default='')
