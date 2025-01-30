@@ -93,7 +93,7 @@ class CreatedByListView(PostListView):
     
     def get(self, request, *args, **kwargs):
         author_pk = self.kwargs.get('author_pk')
-        user = User.objects.filter(pk=author_pk).filter()
+        user = User.objects.filter(pk=author_pk).first()
 
         if user is None:
             return redirect ('blog:index')
