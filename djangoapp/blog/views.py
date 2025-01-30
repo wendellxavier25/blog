@@ -13,7 +13,7 @@ PER_PAGE = 9
 
 class PostListView(ListView):
     template_name = 'blog/pages/index.html'
-    context_object_name = 'page_obj'
+    context_object_name = 'posts'
     paginate_by = PER_PAGE 
     queryset = Post.objects.get_published()
 
@@ -53,7 +53,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
         post = self.get_object()
-        page_title = f'{page.title} - Post - ' # type: ignore
+        page_title = f'{post.title} - Post - ' # type: ignore
         ctx.update({'page_title': page_title})
         return ctx
     
@@ -108,7 +108,7 @@ class CategoryListView(PostListView):
     allow_empty = False
 
     def get_queryset(self) -> QuerySet[Any]:
-        return super().get_queryset().filter(category__slug=slug.kwargs.get('slug'))
+        return super().get_queryset().filter(category__slug=self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -120,7 +120,7 @@ class TagListView(PostListView):
     allow_empty = False
 
     def get_queryset(self) -> QuerySet[Any]:
-        return super().get_queryset().filter(tags__slug=slug.kwargs.get('slug'))
+        return super().get_queryset().filter(tags__slug=self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -147,14 +147,15 @@ class SearchListView(PostListView):
         Q(excerpt__icontains=search_value) |
         Q(content__icontains=search_value)
         )[:PER_PAGE]
-    
+
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs) 
         search_value = self._search_value
         ctx.update({'page_title': f'{self._search_value[:30]} - Search - ', 'search_value': search_value })
-        
         return ctx
     
+
     def get(self, request, *args, **kwargs):
         if self._search_value == '':
             return redirect('blog:index')
